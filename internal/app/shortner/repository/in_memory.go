@@ -3,43 +3,36 @@ package repository
 import (
 	"context"
 	"errors"
-	"log"
 	"sync"
 	"url-shortener/internal/app/shortner/usecase"
 )
 
 type inMemoryDB struct {
 	sync.RWMutex
-	urls map[int]usecase.ShortURL
+	urls map[string]usecase.ShortURL
 }
 
 func NewInMemoryDB() ShortnerRepository {
 	return &inMemoryDB{
-		urls: make(map[int]usecase.ShortURL),
+		urls: make(map[string]usecase.ShortURL),
 	}
 }
 
-func (db *inMemoryDB) Save(ctx context.Context, url usecase.ShortURL) (int, error) {
+func (db *inMemoryDB) Save(ctx context.Context, url usecase.ShortURL) (usecase.ShortURL, error) {
 	db.Lock()
 	defer db.Unlock()
 
-	if _, ok := db.urls[url.ID]; ok {
-		return 0, errors.New("short URL with given ID already exists")
-	}
-
-	db.urls[url.ID] = url
-	return url.ID, nil
+	db.urls[url.ShortURL] = url
+	return url, nil
 }
 
-func (db *inMemoryDB) Get(ctx context.Context, id int) (usecase.ShortURL, error) {
-	log.Println("inMemoryDB GetLongURL()")
-
+func (db *inMemoryDB) Get(ctx context.Context, url string) (usecase.ShortURL, error) {
 	db.RLock()
 	defer db.RUnlock()
 
-	if url, ok := db.urls[id]; ok {
-		return url, nil
+	shortURL, ok := db.urls[url]
+	if !ok {
+		return usecase.ShortURL{}, errors.New("short URL not found")
 	}
-
-	return usecase.ShortURL{}, errors.New("short URL not found")
+	return shortURL, nil
 }

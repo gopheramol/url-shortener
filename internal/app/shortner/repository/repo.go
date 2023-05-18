@@ -6,6 +6,6 @@ import (
 )
 
 type ShortnerRepository interface {
-	Save(ctx context.Context, url usecase.ShortURL) (int, error)
-	Get(ctx context.Context, id int) (usecase.ShortURL, error)
+	Save(ctx context.Context, url usecase.ShortURL) (usecase.ShortURL, error)
+	Get(ctx context.Context, url string) (usecase.ShortURL, error)
 }
