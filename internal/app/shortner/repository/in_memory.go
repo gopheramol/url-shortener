@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"log"
 	"sync"
 	"url-shortener/internal/app/shortner/usecase"
 )
@@ -19,6 +20,7 @@ func NewInMemoryDB() ShortnerRepository {
 }
 
 func (db *inMemoryDB) Save(ctx context.Context, url usecase.ShortURL) (usecase.ShortURL, error) {
+	log.Println("inMemoryDB Save()")
 	db.Lock()
 	defer db.Unlock()
 
@@ -27,6 +29,7 @@ func (db *inMemoryDB) Save(ctx context.Context, url usecase.ShortURL) (usecase.S
 }
 
 func (db *inMemoryDB) Get(ctx context.Context, url string) (usecase.ShortURL, error) {
+	log.Println("inMemoryDB Get()")
 	db.RLock()
 	defer db.RUnlock()
 

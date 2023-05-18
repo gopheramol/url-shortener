@@ -1,14 +1,16 @@
 package web
 
 import (
-	"github.com/gorilla/mux"
-
+	"net/http"
 	"url-shortener/internal/app/shortner/usecase"
 )
 
-func RegisterHandlers(router *mux.Router, usecase usecase.ShortnerUseCase) {
+func RegisterHandlers(router *http.ServeMux, usecase usecase.ShortnerUseCase) {
 	shortenerHandler := NewShortnerHandler(usecase)
 
-	router.HandleFunc("/encode", shortenerHandler.CreateShortURL).Methods("POST")
-	router.HandleFunc("/decode/{url}", shortenerHandler.GetOriginalURL).Methods("POST")
+	// Register the handler for creating short URLs
+	router.HandleFunc("/encode", shortenerHandler.CreateShortURL)
+
+	// Register the handler for decoding short URLs
+	router.HandleFunc("/decode/", shortenerHandler.GetOriginalURL)
 }
