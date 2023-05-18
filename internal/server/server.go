@@ -11,7 +11,7 @@ import (
 
 	"url-shortener/internal/app/shortner/delivery/web"
 	"url-shortener/internal/app/shortner/repository"
-	"url-shortener/internal/app/shortner/usecase"
+	"url-shortener/internal/app/shortner/usecase/usecaseimpl"
 
 	"github.com/gorilla/mux"
 )
@@ -23,7 +23,7 @@ type Server struct {
 func NewServer() *Server {
 	r := mux.NewRouter()
 	repo := repository.NewInMemoryDB()
-	usecase := usecase.ShortnerUseCase(repo)
+	usecase := usecaseimpl.NewShortnerUseCase(repo)
 	web.RegisterHandlers(r, usecase)
 
 	httpServer := &http.Server{

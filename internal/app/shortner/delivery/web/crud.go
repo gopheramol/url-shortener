@@ -19,18 +19,12 @@ func NewShortnerHandler(usecase usecase.ShortnerUseCase) *ShortnerHandler {
 }
 
 func (h *ShortnerHandler) CreateShortURL(w http.ResponseWriter, r *http.Request) {
-	log.Println("Inside ShortnerHandler CreateShortURL()")
-	// ctx := context.Background()
-	// str, err := h.usecase.CreateShortURL(ctx, url)
-	// if err != nil {
-	// 	log.Println("error while create short url", err.Error())
-	// }
-	// fmt.Println(str)
+	h.usecase.EncodeURL(context.Background(), usecase.ShortURL{})
 }
 
 func (h *ShortnerHandler) GetLongURL(w http.ResponseWriter, r *http.Request) {
 	log.Println("ShortnerHandler GetLongURL()")
-	data, err := h.usecase.GetLongURL(context.Background(), 1)
+	data, err := h.usecase.DecodeURL(context.Background(), 1)
 	if err != nil {
 		log.Println("error while create short url", err.Error())
 	}

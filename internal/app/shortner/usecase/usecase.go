@@ -5,6 +5,6 @@ import (
 )
 
 type ShortnerUseCase interface {
-	CreateShortURL(ctx context.Context, url ShortURL) (int, error)
-	GetLongURL(ctx context.Context, id int) (ShortURL, error)
+	EncodeURL(ctx context.Context, url ShortURL) (int, error)
+	DecodeURL(ctx context.Context, id int) (ShortURL, error)
 }
