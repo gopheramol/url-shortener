@@ -18,3 +18,17 @@ http://localhost:8080/decode/phcjoIEV
 
 ### Test
 ```make test```
+
+### Build
+```make build```
+
+### Download
+```make download```
+
+## Note : 
+Working Test cases
+usecase - EncodeURL
+repo - Save() , Get()
+
+Not Working 
+usecase - DecodeURL
